@@ -12,35 +12,66 @@
     position:absolute; top:18px; left:50%; transform:translateX(-50%);
     color:#f3e6c8; letter-spacing:3px; font-size:15px; text-transform:uppercase;
     background:rgba(10,10,12,.55); padding:10px 22px; border:1px solid rgba(201,162,39,.5);
-    border-radius:2px; pointer-events:none; z-index:5; white-space:nowrap;
+    border-radius:2px; pointer-events:none; z-index:5; white-space:nowrap; text-align:center;
   }
   .brand small { display:block; text-align:center; letter-spacing:2px; font-size:10px; color:#c9a227; margin-top:3px; }
   .pnlm-hotspot-base { background:#c9a227 !important; }
   .tip { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); color:#cfc4a6;
-    font-size:12px; letter-spacing:1px; background:rgba(10,10,12,.55); padding:6px 14px; border-radius:20px; z-index:5; }
+    font-size:12px; letter-spacing:1px; background:rgba(10,10,12,.55); padding:6px 14px; border-radius:20px; z-index:5; white-space:nowrap; }
 </style>
 </head>
 <body>
 <div id="pano"></div>
 <div class="brand">Aurum Diamonds <small>by Arpan &middot; 360&deg; showroom tour</small></div>
-<div class="tip">Drag to look around &middot; scroll to zoom</div>
+<div class="tip">Drag to look around &middot; tap the gold dots to walk through</div>
 <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
 <script>
 pannellum.viewer('pano', {
-  type: 'equirectangular',
-  panorama: 'stitched-360meta.jpg',
-  autoLoad: true,
-  autoRotate: -2,
-  compass: true,
-  yaw: 40, pitch: -5, hfov: 90,
-  hotSpots: [
-    { yaw: 47,  pitch: -8,  type:'info', text: 'Diamond display counters' },
-    { yaw: 83,  pitch: -2,  type:'info', text: 'Aurum Diamonds signature wall' },
-    { yaw: 119, pitch: -6,  type:'info', text: 'Billing & gold weighing desk' },
-    { yaw: -22, pitch: -6,  type:'info', text: 'Customer lounge & collections' },
-    { yaw: -126,pitch: 22,  type:'info', text: 'Astrology & gemology corner' },
-    { yaw: -162,pitch: -4,  type:'info', text: 'Store entrance — Kamla Nagar' }
-  ]
+  default: { firstScene: 'street', sceneFadeDuration: 1000, autoLoad: true, compass: true },
+  scenes: {
+    street: {
+      title: 'Kamla Nagar street', type: 'equirectangular', panorama: 'street.jpg',
+      yaw: -9, pitch: -3, hfov: 90,
+      hotSpots: [
+        { yaw: -9, pitch: -8, type: 'scene', sceneId: 'storefront', targetYaw: -11, targetPitch: -3,
+          text: 'Walk to the storefront' }
+      ]
+    },
+    storefront: {
+      title: 'Aurum Diamonds storefront', type: 'equirectangular', panorama: 'storefront.jpg',
+      yaw: -11, pitch: -3, hfov: 90,
+      hotSpots: [
+        { yaw: -11, pitch: -10, type: 'scene', sceneId: 'showroom', targetYaw: 40, targetPitch: -5,
+          text: 'Step inside the showroom' },
+        { yaw: 108, pitch: -4, type: 'scene', sceneId: 'street', targetYaw: -9, targetPitch: -3,
+          text: 'Back to the street' }
+      ]
+    },
+    showroom: {
+      title: 'Main showroom', type: 'equirectangular', panorama: 'showroom.jpg',
+      yaw: 40, pitch: -5, hfov: 90, autoRotate: -2,
+      hotSpots: [
+        { yaw: 47,  pitch: -8, type: 'info', text: 'Diamond display counters' },
+        { yaw: 83,  pitch: -2, type: 'info', text: 'Aurum Diamonds signature wall' },
+        { yaw: 119, pitch: -6, type: 'info', text: 'Billing & gold weighing desk' },
+        { yaw: -22, pitch: -6, type: 'info', text: 'Customer lounge & collections' },
+        { yaw: -127, pitch: -6, type: 'scene', sceneId: 'ringdesk', targetYaw: -20, targetPitch: -5,
+          text: 'Walk to the ring desk' },
+        { yaw: -162, pitch: -4, type: 'scene', sceneId: 'storefront', targetYaw: -11, targetPitch: -3,
+          text: 'Back outside' }
+      ]
+    },
+    ringdesk: {
+      title: 'Ring desk & astrology corner', type: 'equirectangular', panorama: 'ringdesk.jpg',
+      yaw: -20, pitch: -5, hfov: 90,
+      hotSpots: [
+        { yaw: -149, pitch: -5, type: 'scene', sceneId: 'showroom', targetYaw: 40, targetPitch: -5,
+          text: 'Back to the showroom' },
+        { yaw: -20, pitch: -8, type: 'info', text: 'Ring display desk' },
+        { yaw: 30, pitch: 12, type: 'info', text: 'Astrology & gemology corner' }
+      ]
+    }
+  }
 });
 </script>
 </body>
